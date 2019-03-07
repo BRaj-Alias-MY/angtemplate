@@ -1,0 +1,387 @@
+<div class="main-panel">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar bar1"></span>
+                    <span class="icon-bar bar2"></span>
+                    <span class="icon-bar bar3"></span>
+                </button>
+                <a class="navbar-brand" href="#">Dashboard</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li>
+                        <a href="#">
+                            <i class="ti-settings"></i>
+                            <p>Logout</p>
+                        </a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="content">
+        <div class="container-fluid gotop">
+            <div class="row">
+                <div class="col-lg-3 col-sm-6">
+                    <div class="card">
+                        <div class="content">
+                            <div class="row">
+                                <div class="col-xs-5">
+                                    <div class="icon-big icon-warning text-center">
+                                        <i class="ti-server"></i>
+                                    </div>
+                                </div>
+                                <div class="col-xs-7">
+                                    <div class="numbers">
+                                        <p>Interviews</p>
+                                        1
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="footer">
+                                <hr />
+                                <div class="stats">
+                                    <i class="ti-reload"></i> Updated now
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="card">
+                        <div class="content">
+                            <div class="row">
+                                <div class="col-xs-5">
+                                    <div class="icon-big icon-success text-center">
+                                        <i class="ti-wallet"></i>
+                                    </div>
+                                </div>
+                                <div class="col-xs-7">
+                                    <div class="numbers">
+                                        <p>Cleared</p>
+                                        1
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="footer">
+                                <hr />
+                                <div class="stats">
+                                    <i class="ti-calendar"></i> Last day
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="card">
+                        <div class="content">
+                            <div class="row">
+                                <div class="col-xs-5">
+                                    <div class="icon-big icon-danger text-center">
+                                        <i class="ti-pulse"></i>
+                                    </div>
+                                </div>
+                                <div class="col-xs-7">
+                                    <div class="numbers">
+                                        <p>Payments</p>
+                                        1
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="footer">
+                                <hr />
+                                <div class="stats">
+                                    <i class="ti-timer"></i> In the last hour
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="card">
+                        <div class="content">
+                            <div class="row">
+                                <div class="col-xs-5">
+                                    <div class="icon-big icon-info text-center">
+                                        <i class="ti-twitter-alt"></i>
+                                    </div>
+                                </div>
+                                <div class="col-xs-7">
+                                    <div class="numbers">
+                                        <p>Reviews</p>
+                                        1
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="footer">
+                                <hr />
+                                <div class="stats">
+                                    <i class="ti-reload"></i> Updated now
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="header">
+                            <h4 class="title">Enter PIN to take interview right away..</h4>
+                            <br/> <br/> <br/>
+                        </div>
+                        <div class="content table-responsive table-full-width">
+                            <div class="container-fluid">
+                                <form class="example-form" [formGroup]="myForm" (ngSubmit)="onSubmit(myForm.value)">
+                                    <div class="form-group">
+
+                                        <input type="text" class="form-control border-input" placeholder="Enter PIN Number here" formControlName="pin">
+                                    </div>
+
+
+                                    <div class="text-left">
+                                        <button class="btn btn-info btn-fill btn-wd">{{Verifypin}} </button>
+
+                                    </div>
+
+                                </form>
+
+                            </div>
+                        </div>
+
+                        <div class="alert alert-success" *ngIf="pinResponse.status=='Available' && pinResponse.paymentstatus!='Success'">
+                            <strong>Congratulation! You Pin {{pinResponse.pin}} has been Redeemed.
+                                <span style="color:red;">
+                                    <a routerLink="">
+                                        <img src="assets/images/paypal.png" style="width:150px" alt="Pay Now" />
+                                    </a>
+                                </span>
+                            </strong>
+                            <br/>
+                            <small style="color:blue;">Complete the payment to take interview right away..!</small>
+                        </div>
+
+                        <div class="alert alert-warning" *ngIf="pinResponse.status=='Submitted' && pinResponse.paymentstatus!='Success'">
+                            <strong>Expired or Invalid Pin: </strong> {{pinResponse.pin}}
+                        </div>
+
+
+                        <div class="alert alert-success" *ngIf="pinResponse.status=='Submitted' && pinResponse.paymentstatus=='Success'">
+                            <strong>Congratulation! You Pin {{pinResponse.pin}} has been Redeemed. </strong>
+
+                            <a (click)="openDialog()"> Click Here to Take the Interview</a>
+                        </div>
+
+
+                        <div class="alert alert-success" *ngIf="pinResponse.status=='Available' && pinResponse.paymentstatus=='Success'">
+                            <strong>Congratulation! You Pin {{pinResponse.pin}} has been Redeemed. </strong>
+
+                            <a (click)="openDialog()"> Click Here to Take the Interview</a>
+                        </div>
+
+
+                        <div class="alert alert-success" *ngIf="pinResponse.status=='Verified' && pinResponse.paymentstatus=='Success'">
+                            <strong>Congratulation! You Pin {{pinResponse.pin}} has been Redeemed. </strong>
+
+                            <a (click)="openDialog()"> Click Here to Take the Interview</a>
+                        </div>
+
+                        <div class="alert alert-success" *ngIf="pinResponse.status=='Verified' && pinResponse.paymentstatus!='Success'">
+                            <strong>Congratulation! You Pin {{pinResponse.pin}} has been Redeemed.
+                                <span style="color:red;">
+                                    <a routerLink="">
+                                        <img src="assets/images/paypal.png" style="width:150px" alt="Pay Now" />
+                                    </a>
+                                </span>
+                            </strong>
+                            <br/>
+                            <small style="color:blue;">Complete the payment to take interview right away..!</small>
+                        </div>
+
+                        <div class="alert alert-com" *ngIf="pinResponse.status=='Completed'">
+                            <strong>Expired or Invalid Pin: </strong> {{pinResponse.pin}}
+                        </div>
+
+                        <div class="alert alert-warning" *ngIf="pinResponse.message=='no data found!'">
+                            <strong> No Pin Found..! </strong>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="header">
+                            <h4 class="title">Enter PIN to take interview right away..</h4> <br/> <br/> <br/>
+                            <div class="content table-responsive table-full-width">
+
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>S.No</th>
+                                            <th>Title</th>
+                                            <th>Domain</th>
+                                            <th>Sub-Domain</th>
+                                            <th>PIN</th>
+                                            <th>Status</th>
+                                            <th>Payment</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let interview of interviews; let i = index  ">
+                                            <td>{{i+1}}</td>
+                                            <td>
+                                              ABC1
+                                              <input type="hidden" value="{{interview.InterviewId}}"/>
+
+                                            </td>
+                                            <td>{{interview.domainName}}</td>
+                                            <td>{{interview.subDomainName}}</td>
+                                            <td>{{interview.pin}}</td>
+                                            <td>
+                                                <span [ngClass]="{'label-reviewed': interview.status=='Reviewed','label-completed': interview.status=='Completed','label-verified': interview.status=='Verified','label-success1': interview.status=='Available','label-warning1': interview.status=='Submitted'}">{{interview.status}}</span>
+                                            </td>
+                                            <td>
+                                                <span [ngClass]="{'label-warning1' : interview.paymentstatus=='Pending','label-success1' : interview.paymentstatus=='Success'}">{{interview.paymentstatus}}</span>
+                                            </td>
+
+                                        </tr>
+
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <footer class="footer">
+        <div class="container-fluid">
+            <nav class="pull-left">
+
+            </nav>
+            <div class="copyright pull-right">
+                &copy; made with
+                <i class="fa fa-heart heart"></i> by
+                <a href="#">InterviewBuddy</a>
+            </div>
+        </div>
+    </footer>
+
+</div>
+=======================================================
+.navbar-default:not(.navbar-transparent) {
+
+ background: url('/assets/images/menubg.jpg');
+}
+
+.navbar-default .navbar-brand {
+  color: #fff !important;
+}
+
+.navbar {
+  border-radius: 0 !important;
+}
+
+.navbar-default {
+  border: none !important;
+}
+
+.form-control {
+  background-color: #fffcf5;
+  border: medium none;
+  border-radius: 4px;
+  color: #66615b;
+  font-size: 14px;
+  transition: background-color .3s ease 0s;
+  padding: 7px 18px;
+  height: 40px;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.form-control.border-input {
+  border: 1px solid #CCC5B9;
+}
+
+.btn-info.btn-fill {
+  color: #FFFFFF;
+  background-color: #68B3C8;
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+
+.btn {
+  border-radius: 20px !important;
+  box-sizing: border-box;
+  border-width: 2px;
+}
+
+.myapp-no-padding-dialog .mat-dialog-container {
+  padding: 0;
+
+  width: 80%;
+  height: auto;
+}
+
+a {
+  cursor: pointer;
+}
+.navbar .navbar-default{
+  height:350px;
+  z-index: -99;
+  }
+  .navbar-default[_ngcontent-c2] {
+    border: none !important;
+    height: 291px;
+z-index:-99;
+  }
+  .content  {
+    margin-top:-50px;
+  }
+  .main-panel {
+    background-color: #F7F8FD;
+  }
+  .form-control {
+    background: white !important;
+  }
+@media screen and (max-width: 767px) {
+  .table-responsive {
+    border: none !important;
+  }
+  .main-panel {
+    background-color: #F7F8FD;
+  }
+
+  a {
+    cursor: pointer;
+  }
+
+  .myapp-no-padding-dialog .mat-dialog-container {
+    padding: 0;
+    width: 80%;
+    height: auto;
+  }
+  .card{
+    margin-bottom:64px ;
+  }
+}
